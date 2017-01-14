@@ -1,7 +1,21 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+
+	//third party packages
+	"github.com/julienschmidt/httprouter"
+)
 
 func main() {
-	fmt.Println("Hello, this will be my server in go")
+	//instantiate a new router
+	r := httprouter.New()
+
+	r.GET("/test", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		fmt.Fprint(w, "Welcome\n")
+	})
+
+	http.ListenAndServe("localhost:3000", r)
+
 }
