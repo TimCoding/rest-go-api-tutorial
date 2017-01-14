@@ -29,6 +29,30 @@ func main() {
 
 	})
 
+	r.POST("/user", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		//Empty user to be populated
+		u := models.User{}
+
+		//Populate from body
+		json.NewDecoder(r.Body).Decode(&u)
+
+		//Add id
+		u.Id = "foo"
+
+		//Marshal provided interface into json
+
+		uj, _ := json.Marshal(u)
+
+		//Write content-type, status code, payload
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(201)
+		fmt.Fprintf(w, "%s\n", uj)
+	})
+
+	r.DELETE("/user/:id", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		w.WriteHeader(200)
+	})
+
 	http.ListenAndServe("localhost:3000", r)
 
 }
